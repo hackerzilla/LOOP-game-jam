@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
 
     #region GameState
     int score = 0;
-    [SerializeField] public int totalWaves = 1;
     private int currentWave = 0;
     [SerializeField] public Text textDisplayed;
     private bool waveInProgress = false;
