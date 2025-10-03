@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     #region PlayerVariables
-    [SerializeField] public int numberOfTries = 5;
+    //[SerializeField] public int numberOfTries = 5;
     #endregion
 
     #region EnemyVariables
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region GameState
-    int score = 0;
+    //int score = 0;
     private int currentWave = 0;
     [SerializeField] public Text textDisplayed;
     private bool waveInProgress = false;
@@ -25,7 +26,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Assert.IsTrue(numberOfTries >= enemiesPerWave, "Number of tries must be at least the number of enemies!");
+        //Assert.IsTrue(SaveManager.Instance.numberOfTries >= enemiesPerWave, "Number of tries must be at least the number of enemies!");
         StartCoroutine(StartNextWave());
     }
 
@@ -53,6 +54,13 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(StartNextWave());
         }
+
+        if (Input.GetKeyDown(KeyCode.R) && SaveManager.Instance.numberOfTries > 0)
+        {
+            SaveManager.Instance.numberOfTries--;
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
+        }
     }
 
     private void SpawnEnemies(EnemyData[] allEnemies, int enemiesPerWave)
@@ -69,15 +77,15 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        textDisplayed.text = "Final Score: " + score;
+        textDisplayed.text = "Final Score: " + SaveManager.Instance.score;
     }
 
 
 
     public void AddScore()
     {
-        score += 1;
-        Debug.Log("Current Score: " + score);
+        SaveManager.Instance.score += 1;
+        Debug.Log("Current Score: " + SaveManager.Instance.score);
     }
 }
 
